@@ -1,0 +1,29 @@
+{
+  "name": "nadia-store",
+  "version": "1.0.0",
+  "description": "Modern e-commerce store with Next.js, Tailwind CSS, MongoDB, and AI Assistant",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "ai": "^6.0.196",
+    "autoprefixer": "^10.5.0",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "lucide-react": "^1.17.0",
+    "mongoose": "^9.6.3",
+    "next": "^16.2.7",
+    "postcss": "^8.5.15",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.9.1",
+    "@types/react": "19.2.16",
+    "typescript": "6.0.3"
+  }
+}
