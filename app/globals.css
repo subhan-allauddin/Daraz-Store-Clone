@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+
+:root {
+  --midnight: #0b0a10;
+  --surface: #14131b;
+  --surface-raised: #1b1923;
+  --ivory: #f5f1ea;
+  --muted: #a8a3b2;
+  --line: rgba(245, 241, 234, 0.12);
+  --violet: #a78bfa;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--midnight); color: var(--ivory); font-family: Arial, Helvetica, sans-serif; }
+button, input { font: inherit; }
+::selection { color: var(--midnight); background: var(--violet); }
