@@ -2,24 +2,24 @@
 
 A high-fidelity clone of **Daraz** (South Asia's leading online marketplace), built with HTML5, CSS3, JavaScript, and Bootstrap 5. Redesigned with authentic **Daraz Brand Architecture** and e-commerce patterns inspired by the **Doraz WooCommerce Theme** and **Daraz Store Theme**.
 
+> **Note:** Product data, vendors, ratings, stock counts, and authentication (Buyer and Seller Center) are demo/simulated for client-side evaluation.
+
 ---
 
 ## 🎨 Brand Color Palette
 
-Following the official [Daraz Brand Architecture Guidelines](https://discover.daraz.com/brand-architecture/colour):
+### Primary Brand Color
+- **Daraz Orange (`#F85606`)**: Official core primary brand color for navbars, primary CTAs, active states, price points, and sale highlights.
 
-### Primary Brand Colors
-- **Daraz Orange (`#F85606`)**: Core primary brand color for navbars, primary CTAs, active states, price points, and highlights.
-- **Daraz Light Blue / Teal (`#C2FFFA`)**: Signature secondary primary accent used for badges, search action buttons, promotional cards, and hero contrast accents.
-
-### Secondary & Tint Palette
-- **Dark Blue / Slate (`#0f172a`, `#1e293b`)**: Used for top utility bar, footers, and dark headers.
-- **Teal Deep & Dark (`#009688`, `#0b6058`)**: High contrast typography and borders on teal badges.
-- **Purple (`#7c3aed`)**: Secondary accent for corporate/promotional tints.
-- **Green (`#10b981`)**: Verified sellers, in-stock indicators, and trust ratings.
-- **Pink (`#f43f5e`)**: Special sale flags and voucher highlights.
-- **Yellow / Amber (`#f59e0b`)**: Rating stars and high-urgency notifications.
-- **Neutral Greys (`#f8fafc` to `#334155`)**: Crisp modern backgrounds and card borders.
+### Neutral Tint & Secondary Palette
+- **Neutral Light Tint (`#EFF0F5`)**: Standard e-commerce neutral background tint used across category backdrops, borders, and UI panels.
+- **Dark Blue / Slate (`#0F172A`, `#1E293B`)**: Used for the top utility bar, footers, text headings, and high-contrast elements.
+- **Secondary Accents**:
+  - **Green (`#10B981`)**: Verified seller indicators, in-stock badges, and positive ratings.
+  - **Yellow / Amber (`#F59E0B`)**: Product rating stars and urgency notifications.
+  - **Red / Maroon (`#D0011B`)**: DarazMall official flagship badges.
+  - **Purple (`#7C3AED`) & Pink (`#F43F5E`)**: Promotional tint accents.
+  - **Neutral Greys (`#F8FAFC` to `#334155`)**: Crisp card borders, dividers, and subtle backgrounds.
 
 ---
 
@@ -44,11 +44,11 @@ Following the official [Daraz Brand Architecture Guidelines](https://discover.da
 
 ```
 Daraz-Store-Clone/
-├── index.html                 # Main multi-vendor marketplace page
+├── index.html                 # Main multi-vendor marketplace storefront
 ├── css/
 │   └── style.css             # Comprehensive Daraz brand architecture & styles
 ├── js/
-│   └── main.js               # Live search, cart drawer, filter, flash timer, quick view
+│   └── main.js               # Multi-vendor live search, cart drawer, filter, flash timer
 ├── images/
 │   ├── daraz.png             # Daraz brand logo
 │   ├── app-download.png      # App store / Google Play badges
@@ -74,5 +74,3 @@ python3 -m http.server 8000
 # Open in browser
 http://localhost:8000
 ```
-
-> **Note on Simulated Features**: User authentication (Login / Sign In) and Checkout are client-side simulations implemented for demonstration purposes. Credentials are validated locally and no real payment processing or user passwords are stored.

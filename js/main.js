@@ -382,7 +382,7 @@
       let html = `
         <div class="search-header px-3 py-2 border-bottom d-flex justify-content-between align-items-center bg-light">
           <span class="small fw-bold text-dark"><i class="fas fa-bolt text-danger me-1"></i> Suggested Products (${matched.length})</span>
-          <span class="badge" style="background-color: var(--daraz-teal-dark); color: white;">Multi-Vendor</span>
+          <span class="badge" style="background-color: var(--daraz-dark-blue); color: white;">Multi-Vendor</span>
         </div>
         <div class="search-results-list" style="max-height: 360px; overflow-y: auto;">
       `;

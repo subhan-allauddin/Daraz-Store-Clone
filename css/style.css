@@ -1,15 +1,17 @@
 /* ==========================================================================
    Daraz Brand Architecture & E-Commerce Design System
-   Primary Colors:
+   Primary Color:
      - Daraz Orange: #F85606
-     - Daraz Light Blue / Teal: #C2FFFA
-   Secondary & Tint Palette:
+   Neutral Light Tint Palette:
+     - Neutral Tint / Background: #eff0f5
+     - Neutral Border / Light: #e2e8f0
      - Dark Blue / Slate: #0f172a, #1e293b
+   Secondary Accents:
      - Purple: #7c3aed
      - Pink: #f43f5e
      - Green: #10b981
      - Yellow: #f59e0b
-     - Greys & Neutral Tints: #f8fafc, #f1f5f9, #e2e8f0, #cbd5e1, #64748b, #334155
+     - Greys: #f8fafc, #f1f5f9, #cbd5e1, #64748b, #334155
    WordPress & E-Commerce Themes Inspiration:
      - Doraz WooCommerce Theme: Multi-vendor layout, live search, badges, countdown
      - Daraz Store Theme: Clean online marketplace structure, announcement bars, trust strip
@@ -23,11 +25,11 @@
     --daraz-orange-light: #fff2ed;
     --daraz-orange-subtle: rgba(248, 86, 6, 0.12);
 
-    --daraz-teal: #C2FFFA;
-    --daraz-teal-dark: #009688;
-    --daraz-teal-deep: #0b6058;
-    --daraz-teal-bg: #e6fffd;
-    --daraz-teal-border: #7be8e0;
+    /* Neutral Light Tint (Official marketplace neutral tint) */
+    --daraz-neutral-tint: #eff0f5;
+    --daraz-neutral-border: #e2e8f0;
+    --daraz-neutral-hover: #e5e7eb;
+    --daraz-neutral-text: #1e293b;
 
     /* Secondary & Tint Palette */
     --daraz-dark-blue: #0f172a;
@@ -41,7 +43,7 @@
     --daraz-yellow: #f59e0b;
     --daraz-yellow-light: #fef3c7;
 
-    /* Neutral Tints & Greys */
+    /* Neutral Greys */
     --daraz-white: #ffffff;
     --daraz-gray-50: #f8fafc;
     --daraz-gray-100: #f1f5f9;
@@ -68,7 +70,7 @@ body {
     font-family: var(--font-primary);
     line-height: 1.6;
     color: var(--daraz-gray-800);
-    background-color: #f5f5f5;
+    background-color: var(--daraz-neutral-tint);
 }
 
 /* Bootstrap Overrides for Daraz Brand Identity */
@@ -113,17 +115,19 @@ body {
     color: #fff !important;
 }
 
-.btn-teal {
-    background-color: var(--daraz-teal) !important;
-    color: var(--daraz-teal-deep) !important;
-    border: 1px solid var(--daraz-teal-border) !important;
+.btn-teal,
+.btn-neutral {
+    background-color: #f1f5f9 !important;
+    color: var(--daraz-neutral-text) !important;
+    border: 1px solid var(--daraz-neutral-border) !important;
     font-weight: 700;
     transition: var(--transition);
 }
 
-.btn-teal:hover {
-    background-color: #a1fff6 !important;
-    color: #043833 !important;
+.btn-teal:hover,
+.btn-neutral:hover {
+    background-color: var(--daraz-neutral-hover) !important;
+    color: #000 !important;
     transform: translateY(-2px);
 }
 
@@ -145,7 +149,7 @@ body {
 }
 
 .daraz-topbar a:hover {
-    color: var(--daraz-teal);
+    color: #fff;
     text-decoration: underline;
 }
 
@@ -180,8 +184,8 @@ body {
 }
 
 .navbar-brand .brand-badge {
-    background-color: var(--daraz-teal);
-    color: var(--daraz-teal-deep);
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
     font-size: 0.65rem;
     font-weight: 700;
     padding: 2px 6px;
@@ -219,21 +223,21 @@ body {
 }
 
 .header-action-btn:hover {
-    color: var(--daraz-teal);
-    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.18);
 }
 
 .header-action-badge {
     position: absolute;
     top: 2px;
     right: 4px;
-    background-color: var(--daraz-teal);
-    color: var(--daraz-teal-deep);
+    background-color: #fff;
+    color: var(--daraz-orange);
     font-size: 0.7rem;
     font-weight: 800;
     padding: 1px 6px;
     border-radius: 10px;
-    border: 1px solid #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     transition: transform 0.2s ease;
 }
 
@@ -293,8 +297,8 @@ body {
 }
 
 .daraz-search-btn {
-    background-color: var(--daraz-teal) !important;
-    color: var(--daraz-teal-deep) !important;
+    background-color: var(--daraz-orange) !important;
+    color: #fff !important;
     border: none !important;
     font-weight: 700;
     padding: 10px 20px;
@@ -302,8 +306,8 @@ body {
 }
 
 .daraz-search-btn:hover {
-    background-color: #a4fff6 !important;
-    color: #043833 !important;
+    background-color: var(--daraz-orange-hover) !important;
+    color: #fff !important;
 }
 
 /* Live Search Autocomplete Dropdown */
@@ -362,8 +366,8 @@ body {
 }
 
 .daraz-category-strip .mall-badge {
-    background: var(--daraz-teal);
-    color: var(--daraz-teal-deep);
+    background: #d0011b;
+    color: #fff;
     font-size: 0.68rem;
     padding: 1px 5px;
     border-radius: 3px;
@@ -378,18 +382,6 @@ body {
     padding: 60px 0;
     position: relative;
     overflow: hidden;
-}
-
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, var(--daraz-teal) 0%, transparent 70%);
-    opacity: 0.2;
-    border-radius: 50%;
 }
 
 .hero-section-clean {
@@ -424,9 +416,10 @@ body {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
-.promo-card-teal {
-    border-left: 4px solid var(--daraz-teal-dark);
-    background: linear-gradient(135deg, #ffffff 0%, var(--daraz-teal-bg) 100%);
+.promo-card-teal,
+.promo-card-neutral {
+    border-left: 4px solid var(--daraz-dark-blue);
+    background: linear-gradient(135deg, #ffffff 0%, var(--daraz-neutral-tint) 100%);
 }
 
 /* ==========================================================================
@@ -462,9 +455,10 @@ body {
     flex-shrink: 0;
 }
 
-.trust-icon-teal {
-    background-color: var(--daraz-teal-bg);
-    color: var(--daraz-teal-dark);
+.trust-icon-teal,
+.trust-icon-neutral {
+    background-color: #f1f5f9;
+    color: var(--daraz-dark-blue);
 }
 
 .trust-title {
@@ -581,7 +575,7 @@ body {
     transform: translateX(-50%);
     width: 70px;
     height: 4px;
-    background: linear-gradient(90deg, var(--daraz-orange), var(--daraz-teal-dark));
+    background: var(--daraz-orange);
     border-radius: 4px;
 }
 
@@ -641,9 +635,9 @@ body {
 }
 
 .badge-darazmall {
-    background-color: var(--daraz-teal);
-    color: var(--daraz-teal-deep);
-    border: 1px solid var(--daraz-teal-border);
+    background-color: #d0011b;
+    color: #fff;
+    border: none;
     font-weight: 800;
     font-size: 0.72rem;
     padding: 2px 7px;
@@ -770,9 +764,9 @@ body {
 }
 
 .btn-quick-view {
-    background-color: var(--daraz-teal-bg);
-    color: var(--daraz-teal-deep);
-    border: 1px solid var(--daraz-teal-border);
+    background-color: #f1f5f9;
+    color: var(--daraz-neutral-text);
+    border: 1px solid var(--daraz-neutral-border);
     border-radius: 6px;
     font-size: 0.84rem;
     padding: 7px 10px;
@@ -780,8 +774,8 @@ body {
 }
 
 .btn-quick-view:hover {
-    background-color: var(--daraz-teal);
-    color: #043833;
+    background-color: var(--daraz-neutral-hover);
+    color: #000;
 }
 
 /* ==========================================================================
@@ -917,9 +911,9 @@ body {
     box-shadow: 0 6px 16px rgba(248, 86, 6, 0.3);
 }
 
-.help-icon-teal {
-    background: linear-gradient(135deg, var(--daraz-teal-dark), #00bfa5);
-    box-shadow: 0 6px 16px rgba(0, 150, 136, 0.25);
+.help-icon-neutral {
+    background: linear-gradient(135deg, var(--daraz-dark-blue), #334155);
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.25);
 }
 
 .step-card {
@@ -1021,7 +1015,7 @@ footer h5::after {
 }
 
 .footer-links a:hover {
-    color: var(--daraz-teal) !important;
+    color: #fff !important;
     padding-left: 4px;
 }
 
