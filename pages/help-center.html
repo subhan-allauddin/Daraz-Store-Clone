@@ -205,18 +205,83 @@
                             </div>
                         </div>
 
-                        <div class="related-questions mt-5">
-                            <h4 class="mb-3">Related Questions</h4>
-                            <div class="list-group">
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-question-circle me-2"></i>Which items require more time to arrive?
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-question-circle me-2"></i>What are the promised delivery timelines?
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-question-circle me-2"></i>Can I change my shipping address after my order is placed?
-                                </a>
+                        <div class="related-questions mt-5" id="faqSection">
+                            <h4 class="mb-4"><i class="fas fa-question-circle text-primary me-2"></i>Frequently Asked Questions</h4>
+                            <div class="accordion" id="helpCenterAccordion">
+                                <!-- Question 1 -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Which items require more time to arrive?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#helpCenterAccordion">
+                                        <div class="accordion-body">
+                                            Items shipped from overseas (Daraz Global Collection) or bulky/heavy home appliances typically require 7-14 business days. Standard local vendor packages handled via Daraz Express (DEX) arrive within 2-4 business days in major cities.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Question 2 -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            What are the promised delivery timelines?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#helpCenterAccordion">
+                                        <div class="accordion-body">
+                                            Delivery timelines depend on your location and the seller's warehouse:
+                                            <ul class="mt-2 mb-0">
+                                                <li><strong>Karachi, Lahore, Islamabad:</strong> 2 to 4 working days</li>
+                                                <li><strong>Other cities:</strong> 3 to 6 working days</li>
+                                                <li><strong>Cross-Border / Global:</strong> 10 to 18 working days</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Question 3 -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            Can I change my shipping address after my order is placed?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#helpCenterAccordion">
+                                        <div class="accordion-body">
+                                            If your order is still in the <em>"Processing"</em> stage, you may cancel it and place a new order with the updated address. Once the package has been handed over to DEX or a courier partner, shipping addresses cannot be modified.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Question 4 -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingFour">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                            How do I initiate a return or refund?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#helpCenterAccordion">
+                                        <div class="accordion-body">
+                                            You can initiate a return within 14 days of delivery for DarazMall items (and 7 days for marketplace items). Log in to your account, visit your Orders, select the item, and click <strong>Return</strong>. Pack the item in its original packaging with all tags attached.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Question 5 -->
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingFive">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                            Which payment methods are accepted?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#helpCenterAccordion">
+                                        <div class="accordion-body">
+                                            Daraz supports multiple payment options including Cash on Delivery (COD), Credit/Debit Cards (Visa, Mastercard, UnionPay), Daraz Wallet, Easypaisa, and JazzCash.
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

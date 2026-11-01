@@ -98,9 +98,16 @@
     <!-- Products Section -->
     <div class="container mb-5 mt-5">
         <h2 class="text-center mb-5 section-title">Featured Products</h2>
-        <div class="row g-4">
+        <div class="row g-4" id="productContainer">
+            <!-- Empty Search State -->
+            <div id="noProductsFound" class="col-12 text-center py-5 d-none">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">No matching products found</h4>
+                <p class="text-secondary">Try searching with a different term or keyword.</p>
+            </div>
+
             <!-- Product 1 -->
-            <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
                 <div class="card product-card h-100">
                     <img src="https://static-01.daraz.pk/p/708410c25a831ec2411924f8dfafb07d.jpg" class="card-img-top product-img" alt="Shopping Basket">
                     <div class="card-body d-flex flex-column">
@@ -108,14 +115,20 @@
                         <p class="card-text flex-grow-1">Durable plastic shopping basket for kitchen storage</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="price">Rs 77</span>
-                            <button class="btn btn-primary btn-sm">Add to Cart</button>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
+                                    data-id="prod-1" 
+                                    data-title="Kitchen Shopping Basket" 
+                                    data-price="77" 
+                                    data-img="https://static-01.daraz.pk/p/708410c25a831ec2411924f8dfafb07d.jpg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Product 2 -->
-            <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
                 <div class="card product-card h-100">
                     <img src="https://static-01.daraz.pk/p/efae367e257e9d1edd305bfdff65ed89.jpg" class="card-img-top product-img" alt="Lunch Box">
                     <div class="card-body d-flex flex-column">
@@ -123,14 +136,20 @@
                         <p class="card-text flex-grow-1">High-quality lunch box perfect for students</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="price">Rs 141</span>
-                            <button class="btn btn-primary btn-sm">Add to Cart</button>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
+                                    data-id="prod-2" 
+                                    data-title="Student Lunch Box" 
+                                    data-price="141" 
+                                    data-img="https://static-01.daraz.pk/p/efae367e257e9d1edd305bfdff65ed89.jpg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Product 3 -->
-            <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
                 <div class="card product-card h-100">
                     <img src="https://static-01.daraz.pk/p/12037d40ec57450eb42aaa0018fdfe24.jpg" class="card-img-top product-img" alt="Premium Product">
                     <div class="card-body d-flex flex-column">
@@ -138,14 +157,20 @@
                         <p class="card-text flex-grow-1">High-quality premium product for everyday use</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="price">Rs 1,444</span>
-                            <button class="btn btn-primary btn-sm">Add to Cart</button>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
+                                    data-id="prod-3" 
+                                    data-title="Premium Item" 
+                                    data-price="1444" 
+                                    data-img="https://static-01.daraz.pk/p/12037d40ec57450eb42aaa0018fdfe24.jpg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Product 4 -->
-            <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
                 <div class="card product-card h-100">
                     <img src="https://static-01.daraz.pk/p/1032df98668d2c4431371a080fd6d05f.jpg" class="card-img-top product-img" alt="Designer Suit">
                     <div class="card-body d-flex flex-column">
@@ -153,14 +178,20 @@
                         <p class="card-text flex-grow-1">Elegant designer suit for special occasions</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="price">Rs 1,899</span>
-                            <button class="btn btn-primary btn-sm">Add to Cart</button>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
+                                    data-id="prod-4" 
+                                    data-title="Designer Suit" 
+                                    data-price="1899" 
+                                    data-img="https://static-01.daraz.pk/p/1032df98668d2c4431371a080fd6d05f.jpg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Product 5 -->
-            <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
                 <div class="card product-card h-100">
                     <img src="https://static-01.daraz.pk/p/90daeba01323853c6ba55f5baefefd2b.jpg" class="card-img-top product-img" alt="Accessory">
                     <div class="card-body d-flex flex-column">
@@ -168,14 +199,20 @@
                         <p class="card-text flex-grow-1">Stylish accessory to complement your outfit</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="price">Rs 655</span>
-                            <button class="btn btn-primary btn-sm">Add to Cart</button>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
+                                    data-id="prod-5" 
+                                    data-title="Fashion Accessory" 
+                                    data-price="655" 
+                                    data-img="https://static-01.daraz.pk/p/90daeba01323853c6ba55f5baefefd2b.jpg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Product 6 -->
-            <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
                 <div class="card product-card h-100">
                     <img src="https://static-01.daraz.pk/p/5c786508cacb08c61c2b988a2afa4d61.jpg" class="card-img-top product-img" alt="Abbott Product">
                     <div class="card-body d-flex flex-column">
@@ -183,14 +220,20 @@
                         <p class="card-text flex-grow-1">Premium health and wellness product</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="price">Rs 2,505</span>
-                            <button class="btn btn-primary btn-sm">Add to Cart</button>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
+                                    data-id="prod-6" 
+                                    data-title="Abbott Health Product" 
+                                    data-price="2505" 
+                                    data-img="https://static-01.daraz.pk/p/5c786508cacb08c61c2b988a2afa4d61.jpg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Product 7 -->
-            <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
                 <div class="card product-card h-100">
                     <img src="https://static-01.daraz.pk/p/0bee290dee340ce09891cfedb579fcbd.jpg" class="card-img-top product-img" alt="Home Product">
                     <div class="card-body d-flex flex-column">
@@ -198,14 +241,20 @@
                         <p class="card-text flex-grow-1">Essential item for your home needs</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="price">Rs 699</span>
-                            <button class="btn btn-primary btn-sm">Add to Cart</button>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
+                                    data-id="prod-7" 
+                                    data-title="Home Essential" 
+                                    data-price="699" 
+                                    data-img="https://static-01.daraz.pk/p/0bee290dee340ce09891cfedb579fcbd.jpg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Product 8 -->
-            <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
                 <div class="card product-card h-100">
                     <img src="https://static-01.daraz.pk/p/981c7514769ccd16d570f681967e773b.jpg" class="card-img-top product-img" alt="Quality Product">
                     <div class="card-body d-flex flex-column">
@@ -213,7 +262,13 @@
                         <p class="card-text flex-grow-1">High-quality product for daily use</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="price">Rs 599</span>
-                            <button class="btn btn-primary btn-sm">Add to Cart</button>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
+                                    data-id="prod-8" 
+                                    data-title="Quality Item" 
+                                    data-price="599" 
+                                    data-img="https://static-01.daraz.pk/p/981c7514769ccd16d570f681967e773b.jpg">
+                                Add to Cart
+                            </button>
                         </div>
                     </div>
                 </div>
