@@ -3,25 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Daraz Store Clone - Online shopping in South Asia for electronics, fashion, home essentials, and more.">
-    <title>Daraz Store Clone - Your One-Stop Shop</title>
+    <meta name="description" content="Daraz Store Clone - South Asia's leading multi-vendor online marketplace for electronics, fashion, home essentials, and lifestyle products.">
+    <title>Daraz Store Clone - Online Shopping Mall</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="images/daraz.png">
+
+    <!-- Preconnect for Maximum Speed & Performance -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+    <link rel="dns-prefetch" href="https://static-01.daraz.pk">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom CSS -->
+    <!-- Custom CSS with Daraz Brand Architecture -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <!-- Top Announcement Bar -->
+    <div class="daraz-topbar d-none d-md-block">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <span class="app-badge"><i class="fas fa-mobile-alt me-1"></i> SAVE MORE ON APP</span>
+                <a href="pages/help-center.html"><i class="fas fa-store me-1"></i> Sell on Daraz</a>
+                <span class="topbar-divider">|</span>
+                <a href="pages/about-us.html"><i class="fas fa-handshake me-1"></i> Daraz Affiliate Program</a>
+                <span class="topbar-divider">|</span>
+                <a href="pages/help-center.html"><i class="fas fa-question-circle me-1"></i> Help & Support</a>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <a href="pages/contact-us.html"><i class="fas fa-truck-fast me-1"></i> Track My Order</a>
+                <span class="topbar-divider">|</span>
+                <a href="pages/login.html" class="fw-semibold"><i class="fas fa-user me-1"></i> Login</a>
+                <span class="topbar-divider">|</span>
+                <a href="pages/login.html" class="fw-semibold"><i class="fas fa-user-plus me-1"></i> Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
-                <img src="images/daraz.png" alt="Daraz Logo" class="me-2 rounded" style="height: 32px; width: auto; object-fit: contain;">
+                <img src="images/daraz.png" alt="Daraz Logo" class="me-2 rounded bg-white p-1" style="height: 36px; width: auto; object-fit: contain;">
                 <span>Daraz Store</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,18 +69,24 @@
                         <a class="nav-link" href="pages/help-center.html"><i class="fas fa-question-circle me-1"></i>Help Center</a>
                     </li>
                 </ul>
-                <form class="d-flex me-lg-3 my-2 my-lg-0" role="search" id="navbarSearchForm">
-                    <input class="form-control me-2" type="search" id="navbarSearchInput" placeholder="Search products..." aria-label="Search">
-                    <button class="btn btn-outline-light" type="submit" aria-label="Submit search">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
+
+                <!-- Live Search with Dropdown -->
+                <div class="live-search-wrapper me-lg-3 my-2 my-lg-0" style="max-width: 380px; width: 100%;">
+                    <form class="d-flex daraz-search-group" role="search" id="navbarSearchForm">
+                        <input class="form-control daraz-search-input py-2" type="search" id="navbarSearchInput" placeholder="Search 28+ products, brands..." aria-label="Search" autocomplete="off">
+                        <button class="btn btn-primary px-3" type="submit" aria-label="Submit search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                    <div id="liveSearchDropdown" class="live-search-dropdown shadow-lg"></div>
+                </div>
+
                 <div class="d-flex align-items-center gap-2">
                     <button class="btn btn-outline-light position-relative" id="cartBtn" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" aria-label="Shopping Cart">
                         <i class="fas fa-shopping-cart"></i>
-                        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">0</span>
+                        <span id="cartCount" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light text-dark fw-bold">0</span>
                     </button>
-                    <a href="pages/login.html" class="btn btn-warning text-dark fw-semibold" id="navLoginBtn">
+                    <a href="pages/login.html" class="btn btn-light text-dark fw-semibold" id="navLoginBtn">
                         <i class="fas fa-user me-1"></i><span id="navUserText">Login</span>
                     </a>
                 </div>
@@ -61,44 +94,143 @@
         </div>
     </nav>
 
-    <!-- Carousel - Full height, no space after navbar -->
-    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="2"></button>
-            <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="3"></button>
-            <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="4"></button>
+    <!-- Stabilized, Rock-Solid Carousel (No Shaking, Locked Aspect Ratio, Fast Load) -->
+    <div class="container my-3 my-md-4">
+        <div class="carousel-wrapper">
+            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000" data-bs-touch="true">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                    <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&h=380&fit=crop&q=80&auto=format" 
+                             class="d-block w-100 carousel-img" alt="Super Mega Sale" width="1200" height="380" fetchpriority="high">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=1200&h=380&fit=crop&q=80&auto=format" 
+                             class="d-block w-100 carousel-img" alt="Electronics Flagship Deals" width="1200" height="380" loading="lazy" decoding="async">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&h=380&fit=crop&q=80&auto=format" 
+                             class="d-block w-100 carousel-img" alt="Fashion Trends" width="1200" height="380" loading="lazy" decoding="async">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=1200&h=380&fit=crop&q=80&auto=format" 
+                             class="d-block w-100 carousel-img" alt="Home Essentials & Kitchen" width="1200" height="380" loading="lazy" decoding="async">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=1200&h=380&fit=crop&q=80&auto=format" 
+                             class="d-block w-100 carousel-img" alt="Tech & Gadgets Collection" width="1200" height="380" loading="lazy" decoding="async">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev" aria-label="Previous Slide">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next" aria-label="Next Slide">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+            </div>
         </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="https://icms-image.slatic.net/images/ims-web/e26c2493-254f-48b9-9809-2c8b27fe177c.jpg" class="d-block w-100 carousel-img" alt="Special Offers">
-            </div>
-            <div class="carousel-item">
-                <img src="https://icms-image.slatic.net/images/ims-web/5d91e9ac-d5d4-4fe0-9b78-913fb1209611.jpg" class="d-block w-100 carousel-img" alt="New Arrivals">
-            </div>
-            <div class="carousel-item">
-                <img src="https://icms-image.slatic.net/images/ims-web/50e67e52-2f88-4f12-8049-875cf855364e.jpg" class="d-block w-100 carousel-img" alt="Electronics">
-            </div>
-            <div class="carousel-item">
-                <img src="https://icms-image.slatic.net/images/ims-web/d7616278-b51c-46e4-a2fa-430544700b2e.jpg" class="d-block w-100 carousel-img" alt="Fashion">
-            </div>
-            <div class="carousel-item">
-                <img src="https://icms-image.slatic.net/images/ims-web/60c2fb48-b17d-43f7-9b3d-3b6d997350b0.jpg_1200x1200.jpg" class="d-block w-100 carousel-img" alt="Home & Garden">
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
     </div>
 
-    <!-- Products Section -->
-    <div class="container mb-5 mt-5">
-        <h2 class="text-center mb-5 section-title">Featured Products</h2>
-        <div class="row g-4" id="productContainer">
+    <!-- Trust & Multi-Vendor Value Proposition Bar -->
+    <div class="container mb-4">
+        <div class="trust-feature-bar">
+            <div class="row g-3">
+                <div class="col-6 col-md-3">
+                    <div class="trust-item">
+                        <div class="trust-icon-box">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div>
+                            <div class="trust-title">Safe Payments</div>
+                            <p class="trust-desc">Cash on delivery & cards</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="trust-item">
+                        <div class="trust-icon-box trust-icon-neutral">
+                            <i class="fas fa-truck-fast"></i>
+                        </div>
+                        <div>
+                            <div class="trust-title">Nationwide Delivery</div>
+                            <p class="trust-desc">Fast DEX shipping</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="trust-item">
+                        <div class="trust-icon-box">
+                            <i class="fas fa-rotate-left"></i>
+                        </div>
+                        <div>
+                            <div class="trust-title">14 Days Return</div>
+                            <p class="trust-desc">100% Buyer Guarantee</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="trust-item">
+                        <div class="trust-icon-box trust-icon-neutral">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div>
+                            <div class="trust-title">24/7 Live Support</div>
+                            <p class="trust-desc">Dedicated assistance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flash Sale Urgency Strip with Real-Time Countdown -->
+    <div class="container mb-3" id="flash-sale-section">
+        <div class="flash-sale-strip shadow-sm">
+            <div class="d-flex align-items-center flex-wrap gap-3">
+                <h3 class="flash-sale-title">
+                    <i class="fas fa-bolt text-danger"></i> Flash Sale
+                </h3>
+                <div class="countdown-box">
+                    <span class="small fw-semibold text-muted me-1">Ending in:</span>
+                    <span class="countdown-digit" id="flashHours">08</span>
+                    <span class="countdown-sep">:</span>
+                    <span class="countdown-digit" id="flashMins">45</span>
+                    <span class="countdown-sep">:</span>
+                    <span class="countdown-digit" id="flashSecs">30</span>
+                </div>
+            </div>
+            <div>
+                <span class="badge bg-danger px-3 py-2 fw-semibold">Limited Quantity Deals</span>
+            </div>
+        </div>
+
+        <!-- Multi-Vendor Filter Pills -->
+        <div class="vendor-filter-bar shadow-sm">
+            <span class="small fw-bold text-muted d-flex align-items-center me-2">
+                <i class="fas fa-filter text-primary me-1"></i> Filter By:
+            </span>
+            <button class="vendor-filter-btn active" data-filter="all">All (28 Products)</button>
+            <button class="vendor-filter-btn" data-filter="darazmall"><i class="fas fa-award text-danger me-1"></i> DarazMall Official</button>
+            <button class="vendor-filter-btn" data-filter="top-rated"><i class="fas fa-star text-warning me-1"></i> Top Rated (4.7+)</button>
+            <button class="vendor-filter-btn" data-filter="flash-deals"><i class="fas fa-fire text-danger me-1"></i> Flash Deals</button>
+            <button class="vendor-filter-btn" data-filter="under-1000">Under Rs. 1,000</button>
+        </div>
+    </div>
+
+    <!-- Products Section (28 Distinct Fast-Loading Products) -->
+    <main class="container mb-5" id="featured-products">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title text-start mb-0">Featured Marketplace Products</h2>
+            <span class="text-muted small fw-semibold">28 Products Available</span>
+        </div>
+
+        <div class="row g-3 g-md-4" id="productContainer">
             <!-- Empty Search State -->
             <div id="noProductsFound" class="col-12 text-center py-5 d-none">
                 <i class="fas fa-search fa-3x text-muted mb-3"></i>
@@ -107,20 +239,32 @@
             </div>
 
             <!-- Product 1 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="1" data-vendor-type="darazmall" data-rating="4.7" data-is-flash="true" data-price="77">
                 <div class="card product-card h-100">
-                    <img src="https://static-01.daraz.pk/p/708410c25a831ec2411924f8dfafb07d.jpg" class="card-img-top product-img" alt="Shopping Basket">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Kitchen Shopping Basket</h5>
-                        <p class="card-text flex-grow-1">Durable plastic shopping basket for kitchen storage</p>
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-49%</span>
+                        <img src="https://static-01.daraz.pk/p/708410c25a831ec2411924f8dfafb07d.jpg" class="card-img-top product-img" alt="Kitchen Shopping Basket" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">HomeMart Official</span>
+                        </div>
+                        <h5 class="card-title" title="Kitchen Shopping Basket & Organizer">Kitchen Shopping Basket</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(142)</span>
+                        </div>
+                        <div class="price-container">
                             <span class="price">Rs 77</span>
-                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
-                                    data-id="prod-1" 
-                                    data-title="Kitchen Shopping Basket" 
-                                    data-price="77" 
-                                    data-img="https://static-01.daraz.pk/p/708410c25a831ec2411924f8dfafb07d.jpg">
-                                Add to Cart
+                            <span class="original-price">Rs 150</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-1" data-title="Kitchen Shopping Basket" data-price="77" data-img="https://static-01.daraz.pk/p/708410c25a831ec2411924f8dfafb07d.jpg">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="1">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
@@ -128,20 +272,32 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="2" data-vendor-type="verified" data-rating="4.8" data-is-flash="false" data-price="141">
                 <div class="card product-card h-100">
-                    <img src="https://static-01.daraz.pk/p/efae367e257e9d1edd305bfdff65ed89.jpg" class="card-img-top product-img" alt="Lunch Box">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Student Lunch Box</h5>
-                        <p class="card-text flex-grow-1">High-quality lunch box perfect for students</p>
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-46%</span>
+                        <img src="https://static-01.daraz.pk/p/efae367e257e9d1edd305bfdff65ed89.jpg" class="card-img-top product-img" alt="Lunch Box" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="text-truncate">SmartLiving Store</span>
+                        </div>
+                        <h5 class="card-title" title="Student Insulated Lunch Box with Cutlery">Student Lunch Box</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(98)</span>
+                        </div>
+                        <div class="price-container">
                             <span class="price">Rs 141</span>
-                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
-                                    data-id="prod-2" 
-                                    data-title="Student Lunch Box" 
-                                    data-price="141" 
-                                    data-img="https://static-01.daraz.pk/p/efae367e257e9d1edd305bfdff65ed89.jpg">
-                                Add to Cart
+                            <span class="original-price">Rs 260</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-2" data-title="Student Lunch Box" data-price="141" data-img="https://static-01.daraz.pk/p/efae367e257e9d1edd305bfdff65ed89.jpg">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="2">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
@@ -149,20 +305,32 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="3" data-vendor-type="darazmall" data-rating="4.9" data-is-flash="false" data-price="1444">
                 <div class="card product-card h-100">
-                    <img src="https://static-01.daraz.pk/p/12037d40ec57450eb42aaa0018fdfe24.jpg" class="card-img-top product-img" alt="Premium Product">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Premium Item</h5>
-                        <p class="card-text flex-grow-1">High-quality premium product for everyday use</p>
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-50%</span>
+                        <img src="https://static-01.daraz.pk/p/12037d40ec57450eb42aaa0018fdfe24.jpg" class="card-img-top product-img" alt="Premium Earbuds" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">SoundCore Flagship</span>
+                        </div>
+                        <h5 class="card-title" title="Premium Smart Wireless Earbuds Pro">Wireless Earbuds Pro</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(520)</span>
+                        </div>
+                        <div class="price-container">
                             <span class="price">Rs 1,444</span>
-                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
-                                    data-id="prod-3" 
-                                    data-title="Premium Item" 
-                                    data-price="1444" 
-                                    data-img="https://static-01.daraz.pk/p/12037d40ec57450eb42aaa0018fdfe24.jpg">
-                                Add to Cart
+                            <span class="original-price">Rs 2,899</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-3" data-title="Premium Wireless Earbuds Pro" data-price="1444" data-img="https://static-01.daraz.pk/p/12037d40ec57450eb42aaa0018fdfe24.jpg">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="3">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
@@ -170,20 +338,32 @@
             </div>
 
             <!-- Product 4 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="4" data-vendor-type="darazmall" data-rating="4.6" data-is-flash="true" data-price="1899">
                 <div class="card product-card h-100">
-                    <img src="https://static-01.daraz.pk/p/1032df98668d2c4431371a080fd6d05f.jpg" class="card-img-top product-img" alt="Designer Suit">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Designer Suit</h5>
-                        <p class="card-text flex-grow-1">Elegant designer suit for special occasions</p>
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-41%</span>
+                        <img src="https://static-01.daraz.pk/p/1032df98668d2c4431371a080fd6d05f.jpg" class="card-img-top product-img" alt="Designer Suit" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Sapphire Lifestyle</span>
+                        </div>
+                        <h5 class="card-title" title="Men's Luxury Embroidered Designer Suit">Designer Luxury Suit</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(67)</span>
+                        </div>
+                        <div class="price-container">
                             <span class="price">Rs 1,899</span>
-                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
-                                    data-id="prod-4" 
-                                    data-title="Designer Suit" 
-                                    data-price="1899" 
-                                    data-img="https://static-01.daraz.pk/p/1032df98668d2c4431371a080fd6d05f.jpg">
-                                Add to Cart
+                            <span class="original-price">Rs 3,200</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-4" data-title="Designer Luxury Suit" data-price="1899" data-img="https://static-01.daraz.pk/p/1032df98668d2c4431371a080fd6d05f.jpg">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="4">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
@@ -191,20 +371,32 @@
             </div>
 
             <!-- Product 5 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="5" data-vendor-type="verified" data-rating="4.5" data-is-flash="false" data-price="655">
                 <div class="card product-card h-100">
-                    <img src="https://static-01.daraz.pk/p/90daeba01323853c6ba55f5baefefd2b.jpg" class="card-img-top product-img" alt="Accessory">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Fashion Accessory</h5>
-                        <p class="card-text flex-grow-1">Stylish accessory to complement your outfit</p>
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-45%</span>
+                        <img src="https://static-01.daraz.pk/p/90daeba01323853c6ba55f5baefefd2b.jpg" class="card-img-top product-img" alt="Fashion Accessory" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="text-truncate">Glow & Shine Jewels</span>
+                        </div>
+                        <h5 class="card-title" title="Chic Fashion Pendant & Bracelet Set">Pendant & Bracelet Set</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(112)</span>
+                        </div>
+                        <div class="price-container">
                             <span class="price">Rs 655</span>
-                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
-                                    data-id="prod-5" 
-                                    data-title="Fashion Accessory" 
-                                    data-price="655" 
-                                    data-img="https://static-01.daraz.pk/p/90daeba01323853c6ba55f5baefefd2b.jpg">
-                                Add to Cart
+                            <span class="original-price">Rs 1,199</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-5" data-title="Pendant & Bracelet Set" data-price="655" data-img="https://static-01.daraz.pk/p/90daeba01323853c6ba55f5baefefd2b.jpg">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="5">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
@@ -212,20 +404,32 @@
             </div>
 
             <!-- Product 6 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="6" data-vendor-type="darazmall" data-rating="4.9" data-is-flash="false" data-price="2505">
                 <div class="card product-card h-100">
-                    <img src="https://static-01.daraz.pk/p/5c786508cacb08c61c2b988a2afa4d61.jpg" class="card-img-top product-img" alt="Abbott Product">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Abbott Health Product</h5>
-                        <p class="card-text flex-grow-1">Premium health and wellness product</p>
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-19%</span>
+                        <img src="https://static-01.daraz.pk/p/5c786508cacb08c61c2b988a2afa4d61.jpg" class="card-img-top product-img" alt="Abbott Product" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Abbott Official Store</span>
+                        </div>
+                        <h5 class="card-title" title="Abbott Nutrition Wellness Health Powder">Abbott Health Powder</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(310)</span>
+                        </div>
+                        <div class="price-container">
                             <span class="price">Rs 2,505</span>
-                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
-                                    data-id="prod-6" 
-                                    data-title="Abbott Health Product" 
-                                    data-price="2505" 
-                                    data-img="https://static-01.daraz.pk/p/5c786508cacb08c61c2b988a2afa4d61.jpg">
-                                Add to Cart
+                            <span class="original-price">Rs 3,100</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-6" data-title="Abbott Health Powder" data-price="2505" data-img="https://static-01.daraz.pk/p/5c786508cacb08c61c2b988a2afa4d61.jpg">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="6">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
@@ -233,20 +437,32 @@
             </div>
 
             <!-- Product 7 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="7" data-vendor-type="verified" data-rating="4.6" data-is-flash="true" data-price="699">
                 <div class="card product-card h-100">
-                    <img src="https://static-01.daraz.pk/p/0bee290dee340ce09891cfedb579fcbd.jpg" class="card-img-top product-img" alt="Home Product">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Home Essential</h5>
-                        <p class="card-text flex-grow-1">Essential item for your home needs</p>
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-44%</span>
+                        <img src="https://static-01.daraz.pk/p/0bee290dee340ce09891cfedb579fcbd.jpg" class="card-img-top product-img" alt="Home Essential" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="text-truncate">DecoCraft Official</span>
+                        </div>
+                        <h5 class="card-title" title="Home Essential Multi-Use Organizer Rack">Multi-Use Organizer Rack</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(89)</span>
+                        </div>
+                        <div class="price-container">
                             <span class="price">Rs 699</span>
-                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
-                                    data-id="prod-7" 
-                                    data-title="Home Essential" 
-                                    data-price="699" 
-                                    data-img="https://static-01.daraz.pk/p/0bee290dee340ce09891cfedb579fcbd.jpg">
-                                Add to Cart
+                            <span class="original-price">Rs 1,250</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-7" data-title="Multi-Use Organizer Rack" data-price="699" data-img="https://static-01.daraz.pk/p/0bee290dee340ce09891cfedb579fcbd.jpg">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="7">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
@@ -254,21 +470,750 @@
             </div>
 
             <!-- Product 8 -->
-            <div class="col-lg-3 col-md-4 col-sm-6 product-col">
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="8" data-vendor-type="verified" data-rating="4.7" data-is-flash="false" data-price="599">
                 <div class="card product-card h-100">
-                    <img src="https://static-01.daraz.pk/p/981c7514769ccd16d570f681967e773b.jpg" class="card-img-top product-img" alt="Quality Product">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Quality Item</h5>
-                        <p class="card-text flex-grow-1">High-quality product for daily use</p>
-                        <div class="d-flex justify-content-between align-items-center">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-40%</span>
+                        <img src="https://static-01.daraz.pk/p/981c7514769ccd16d570f681967e773b.jpg" class="card-img-top product-img" alt="Quality Product" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="text-truncate">Prime Retail PK</span>
+                        </div>
+                        <h5 class="card-title" title="Ergonomic Daily Comfort Utility Item">Daily Comfort Utility Item</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(76)</span>
+                        </div>
+                        <div class="price-container">
                             <span class="price">Rs 599</span>
-                            <button class="btn btn-primary btn-sm add-to-cart-btn" 
-                                    data-id="prod-8" 
-                                    data-title="Quality Item" 
-                                    data-price="599" 
-                                    data-img="https://static-01.daraz.pk/p/981c7514769ccd16d570f681967e773b.jpg">
-                                Add to Cart
+                            <span class="original-price">Rs 999</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-8" data-title="Daily Comfort Utility Item" data-price="599" data-img="https://static-01.daraz.pk/p/981c7514769ccd16d570f681967e773b.jpg">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
                             </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="8">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 9 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="9" data-vendor-type="darazmall" data-rating="4.8" data-is-flash="true" data-price="2499">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-40%</span>
+                        <img src="https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Fitness Tracker" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Xiaomi Direct</span>
+                        </div>
+                        <h5 class="card-title" title="Smart Fitness Tracker Band Pro">Smart Fitness Tracker Band Pro</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(230)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 2,499</span>
+                            <span class="original-price">Rs 4,199</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-9" data-title="Smart Fitness Tracker Band Pro" data-price="2499" data-img="https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="9">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 10 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="10" data-vendor-type="darazmall" data-rating="4.9" data-is-flash="false" data-price="3299">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-40%</span>
+                        <img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Power Bank" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Anker Official</span>
+                        </div>
+                        <h5 class="card-title" title="Fast-Charging Power Bank 20000mAh">Power Bank 20000mAh 22.5W</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(415)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 3,299</span>
+                            <span class="original-price">Rs 5,499</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-10" data-title="Fast-Charging Power Bank 20000mAh" data-price="3299" data-img="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="10">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 11 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="11" data-vendor-type="darazmall" data-rating="4.7" data-is-flash="true" data-price="4199">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-40%</span>
+                        <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Mechanical Keyboard" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Logitech Store</span>
+                        </div>
+                        <h5 class="card-title" title="Gaming Mechanical RGB Keyboard">Gaming Mechanical Keyboard</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(180)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 4,199</span>
+                            <span class="original-price">Rs 6,999</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-11" data-title="Gaming Mechanical RGB Keyboard" data-price="4199" data-img="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="11">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 12 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="12" data-vendor-type="darazmall" data-rating="4.9" data-is-flash="false" data-price="5499">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-39%</span>
+                        <img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Chronograph Watch" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Casio Official</span>
+                        </div>
+                        <h5 class="card-title" title="Classic Chronograph Quartz Watch">Classic Chronograph Watch</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(210)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 5,499</span>
+                            <span class="original-price">Rs 8,999</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-12" data-title="Classic Chronograph Quartz Watch" data-price="5499" data-img="https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="12">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 13 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="13" data-vendor-type="darazmall" data-rating="4.6" data-is-flash="true" data-price="2899">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-36%</span>
+                        <img src="https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Electric Kettle" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Philips Domestic</span>
+                        </div>
+                        <h5 class="card-title" title="Stainless Steel Electric Kettle 1.8L">Stainless Steel Electric Kettle</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(95)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 2,899</span>
+                            <span class="original-price">Rs 4,499</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-13" data-title="Stainless Steel Electric Kettle 1.8L" data-price="2899" data-img="https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="13">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 14 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="14" data-vendor-type="verified" data-rating="4.5" data-is-flash="false" data-price="1199">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-40%</span>
+                        <img src="https://images.unsplash.com/photo-1618941716939-553df3c6c278?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Portable Desk Fan" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="text-truncate">Baseus Global</span>
+                        </div>
+                        <h5 class="card-title" title="Ultra-Quiet Portable Desk Fan">Ultra-Quiet Portable Desk Fan</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(88)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 1,199</span>
+                            <span class="original-price">Rs 1,999</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-14" data-title="Ultra-Quiet Portable Desk Fan" data-price="1199" data-img="https://images.unsplash.com/photo-1618941716939-553df3c6c278?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="14">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 15 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="15" data-vendor-type="darazmall" data-rating="4.9" data-is-flash="false" data-price="6999">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-39%</span>
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Over-Ear Headphones" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Sony Audio PK</span>
+                        </div>
+                        <h5 class="card-title" title="Noise-Cancelling Over-Ear Headphones">Noise-Cancelling Headphones</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(340)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 6,999</span>
+                            <span class="original-price">Rs 11,500</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-15" data-title="Noise-Cancelling Over-Ear Headphones" data-price="6999" data-img="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="15">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 16 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="16" data-vendor-type="darazmall" data-rating="4.6" data-is-flash="true" data-price="3499">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-33%</span>
+                        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Men Loafers" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Bata Flagship</span>
+                        </div>
+                        <h5 class="card-title" title="Leather Casual Men's Loafers">Casual Leather Men Loafers</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(124)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 3,499</span>
+                            <span class="original-price">Rs 5,200</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-16" data-title="Leather Casual Men's Loafers" data-price="3499" data-img="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="16">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 17 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="17" data-vendor-type="verified" data-rating="4.7" data-is-flash="false" data-price="899">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-50%</span>
+                        <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Sunglasses" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="text-truncate">Ray-Style Eyewear</span>
+                        </div>
+                        <h5 class="card-title" title="UV Protection Polarized Sunglasses">UV400 Polarized Sunglasses</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(156)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 899</span>
+                            <span class="original-price">Rs 1,799</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-17" data-title="UV Protection Polarized Sunglasses" data-price="899" data-img="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="17">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 18 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="18" data-vendor-type="darazmall" data-rating="4.7" data-is-flash="true" data-price="3799">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-37%</span>
+                        <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Food Processor" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Tefal Kitchen</span>
+                        </div>
+                        <h5 class="card-title" title="Compact Multi-Blade Food Processor">Multi-Blade Food Processor</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(73)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 3,799</span>
+                            <span class="original-price">Rs 5,999</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-18" data-title="Compact Multi-Blade Food Processor" data-price="3799" data-img="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="18">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 19 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="19" data-vendor-type="verified" data-rating="4.6" data-is-flash="false" data-price="1650">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-40%</span>
+                        <img src="https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Frying Pan" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="text-truncate">Prestige Cookware</span>
+                        </div>
+                        <h5 class="card-title" title="Non-Stick Ceramic Frying Pan 28cm">Ceramic Non-Stick Frying Pan</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(110)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 1,650</span>
+                            <span class="original-price">Rs 2,750</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-19" data-title="Non-Stick Ceramic Frying Pan 28cm" data-price="1650" data-img="https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="19">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 20 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="20" data-vendor-type="darazmall" data-rating="4.8" data-is-flash="true" data-price="920">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-34%</span>
+                        <img src="https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Herbal Shampoo" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">L'Oreal Paris</span>
+                        </div>
+                        <h5 class="card-title" title="Herbal Anti-Hairfall Shampoo 400ml">Anti-Hairfall Shampoo 400ml</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(420)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 920</span>
+                            <span class="original-price">Rs 1,400</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-20" data-title="Herbal Anti-Hairfall Shampoo 400ml" data-price="920" data-img="https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="20">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 21 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="21" data-vendor-type="verified" data-rating="4.8" data-is-flash="false" data-price="449">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-50%</span>
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="USB-C Cable" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="text-truncate">Ugreen Official</span>
+                        </div>
+                        <h5 class="card-title" title="High-Speed USB-C Braided Fast Cable">Braided USB-C Fast Cable 60W</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(310)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 449</span>
+                            <span class="original-price">Rs 899</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-21" data-title="High-Speed USB-C Braided Fast Cable" data-price="449" data-img="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="21">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 22 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="22" data-vendor-type="verified" data-rating="4.7" data-is-flash="false" data-price="1750">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-42%</span>
+                        <img src="https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Memory Foam Pillow" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="text-truncate">SleepWell PK</span>
+                        </div>
+                        <h5 class="card-title" title="Ergonomic Memory Foam Contour Pillow">Memory Foam Contour Pillow</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(84)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 1,750</span>
+                            <span class="original-price">Rs 2,999</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-22" data-title="Ergonomic Memory Foam Contour Pillow" data-price="1750" data-img="https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="22">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 23 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="23" data-vendor-type="darazmall" data-rating="4.8" data-is-flash="true" data-price="4899">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-39%</span>
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Running Shoes" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Nike Athletics</span>
+                        </div>
+                        <h5 class="card-title" title="Lightweight Breathable Running Shoes">Breathable Running Shoes</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(175)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 4,899</span>
+                            <span class="original-price">Rs 7,999</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-23" data-title="Lightweight Breathable Running Shoes" data-price="4899" data-img="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="23">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 24 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="24" data-vendor-type="darazmall" data-rating="4.7" data-is-flash="false" data-price="2150">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-39%</span>
+                        <img src="https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="LED Desk Lamp" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Mi Eco-System</span>
+                        </div>
+                        <h5 class="card-title" title="Smart Touch Dimmable LED Desk Lamp">Smart Dimmable LED Desk Lamp</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(130)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 2,150</span>
+                            <span class="original-price">Rs 3,499</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-24" data-title="Smart Touch Dimmable LED Desk Lamp" data-price="2150" data-img="https://images.unsplash.com/photo-1534073828943-f801091bb18c?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="24">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 25 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="25" data-vendor-type="verified" data-rating="4.6" data-is-flash="true" data-price="799">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-47%</span>
+                        <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Water Bottle" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="text-truncate">HydroFlow Store</span>
+                        </div>
+                        <h5 class="card-title" title="Stainless Steel Insulated Water Bottle 1L">Insulated Water Bottle 1L</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(145)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 799</span>
+                            <span class="original-price">Rs 1,499</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-25" data-title="Stainless Steel Insulated Water Bottle 1L" data-price="799" data-img="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="25">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 26 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="26" data-vendor-type="verified" data-rating="4.6" data-is-flash="false" data-price="7499">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-42%</span>
+                        <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="4K Action Camera" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-verified">Verified</span>
+                            <span class="text-truncate">GoAction Tech</span>
+                        </div>
+                        <h5 class="card-title" title="4K Ultra HD Waterproof Action Camera">4K Ultra HD Action Camera</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            <span class="review-count">(90)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 7,499</span>
+                            <span class="original-price">Rs 12,999</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-26" data-title="4K Ultra HD Waterproof Action Camera" data-price="7499" data-img="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="26">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 27 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="27" data-vendor-type="darazmall" data-rating="4.8" data-is-flash="true" data-price="2999">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-38%</span>
+                        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Hair Dryer" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Babyliss Care</span>
+                        </div>
+                        <h5 class="card-title" title="Salon Professional Ionic Hair Dryer">Salon Ionic Hair Dryer</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(160)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 2,999</span>
+                            <span class="original-price">Rs 4,800</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-27" data-title="Salon Professional Ionic Hair Dryer" data-price="2999" data-img="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="27">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product 28 (NEW) -->
+            <div class="col-6 col-md-4 col-lg-3 product-col" data-product-id="28" data-vendor-type="darazmall" data-rating="4.9" data-is-flash="false" data-price="1899">
+                <div class="card product-card h-100">
+                    <div class="product-img-wrapper">
+                        <span class="badge-discount">-41%</span>
+                        <img src="https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=400&h=400&fit=crop&q=80&auto=format" class="card-img-top product-img" alt="Gaming Mouse" loading="lazy" decoding="async">
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <div class="vendor-tag">
+                            <span class="badge badge-darazmall">DarazMall</span>
+                            <span class="text-truncate">Razer Flagship</span>
+                        </div>
+                        <h5 class="card-title" title="Wireless Ergonomic Optical Gaming Mouse">Wireless Optical Gaming Mouse</h5>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            <span class="review-count">(280)</span>
+                        </div>
+                        <div class="price-container">
+                            <span class="price">Rs 1,899</span>
+                            <span class="original-price">Rs 3,199</span>
+                        </div>
+                        <div class="product-card-actions">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn flex-grow-1" data-id="prod-28" data-title="Wireless Ergonomic Optical Gaming Mouse" data-price="1899" data-img="https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=400&h=400&fit=crop&q=80&auto=format">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-quick-view btn-sm" title="Quick View" data-id="28">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Quick View Modal (Elementor & WooCommerce Doraz Style) -->
+    <div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered quick-view-dialog">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-bold text-dark" id="quickViewModalLabel">Product Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-md-5">
+                            <div class="qv-img-container">
+                                <img id="qvModalImage" src="" alt="Product Image" class="img-fluid rounded" style="max-height: 280px; object-fit: contain;">
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span id="qvModalVendorBadge" class="badge"></span>
+                                <span class="text-muted small">Sold by: <strong id="qvModalVendor" class="text-dark"></strong></span>
+                            </div>
+                            <h4 id="qvModalTitle" class="fw-bold text-dark mb-2"></h4>
+                            <div class="text-warning small mb-2" id="qvModalRating"></div>
+                            
+                            <div class="d-flex align-items-baseline gap-2 mb-3">
+                                <span class="fs-3 fw-bold text-danger" id="qvModalPrice"></span>
+                                <del class="text-muted" id="qvModalOriginalPrice"></del>
+                                <span class="badge bg-danger" id="qvModalDiscount"></span>
+                            </div>
+
+                            <p class="text-muted small mb-3" id="qvModalDescription"></p>
+
+                            <div class="p-2 rounded bg-light mb-3 small">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted">Category:</span>
+                                    <strong id="qvModalCategory" class="text-dark"></strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Stock Status:</span>
+                                    <strong id="qvModalStock" class="text-success"></strong>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-primary flex-grow-1" id="qvAddToCartBtn">
+                                    <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
