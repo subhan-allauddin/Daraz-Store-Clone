@@ -7,7 +7,7 @@
  *   3. Flash Sale Dynamic Live Countdown Timer
  *   4. Elementor / Doraz Style Quick View Modal
  *   5. Interactive Shopping Cart with LocalStorage Persistence & Offcanvas Drawer
- *   6. Buyer & Seller Center Authentication Simulation
+ *   6. User Authentication & Session Management
  *   7. Contact Form Handler & Global Toast Notifications
  *   8. Smooth Back to Top Navigation
  */
@@ -806,8 +806,9 @@
       searchForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const query = searchInput.value.trim();
-        const isHomePage = !!document.getElementById('productsGrid');
-        if (isHomePage) {
+        const isIndexPage = !window.location.pathname.includes('/pages/') && (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/') || !window.location.pathname.includes('.html'));
+        if (isIndexPage) {
+          filterGridProducts(query.toLowerCase());
           const section = document.getElementById('featured-products');
           if (section) section.scrollIntoView({ behavior: 'smooth' });
           if (searchDropdown) searchDropdown.classList.remove('show');
@@ -829,19 +830,26 @@
   }
 
   function filterGridProducts(query) {
-    const items = document.querySelectorAll('.product-grid-item, .product-col');
+    const items = document.querySelectorAll('.product-col, .product-grid-item');
+    const noFound = document.getElementById('noProductsFound');
     if (!items.length) return;
 
+    let visibleCount = 0;
     items.forEach(item => {
       const text = item.textContent.toLowerCase();
       if (!query || text.includes(query)) {
         item.style.display = '';
         item.classList.remove('d-none');
+        visibleCount++;
       } else {
         item.style.display = 'none';
         item.classList.add('d-none');
       }
     });
+
+    if (noFound) {
+      noFound.classList.toggle('d-none', visibleCount > 0);
+    }
   }
 
   // =========================================================================
@@ -849,7 +857,7 @@
   // =========================================================================
   function setupVendorFilter() {
     const filterButtons = document.querySelectorAll('.vendor-filter-btn');
-    const productCards = document.querySelectorAll('.product-grid-item');
+    const productCards = document.querySelectorAll('.product-col, .product-grid-item');
 
     if (!filterButtons.length || !productCards.length) return;
 
@@ -859,6 +867,7 @@
         btn.classList.add('active');
 
         const filter = btn.getAttribute('data-filter');
+        let visibleCount = 0;
 
         productCards.forEach(card => {
           const vendorType = card.getAttribute('data-vendor-type');
@@ -873,8 +882,20 @@
           else if (filter === 'flash-deals' && isFlash) show = true;
           else if (filter === 'under-1000' && price < 1000) show = true;
 
-          card.style.display = show ? '' : 'none';
+          if (show) {
+            card.style.display = '';
+            card.classList.remove('d-none');
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+            card.classList.add('d-none');
+          }
         });
+
+        const noFound = document.getElementById('noProductsFound');
+        if (noFound) {
+          noFound.classList.toggle('d-none', visibleCount > 0);
+        }
       });
     });
   }
@@ -993,84 +1014,521 @@
 
     const checkoutBtn = document.getElementById('checkoutBtn');
     if (checkoutBtn) {
-      checkoutBtn.addEventListener('click', () => {
-        const cart = getCart();
-        if (cart.length === 0) {
-          showToast('Your cart is empty. Add products before checkout!', 'warning');
-        } else {
-          showToast('Redirecting to Daraz Secure Checkout... Thank you for shopping with us!', 'success');
+      checkoutBtn.addEventListener('click', openCheckoutModal);
+    }
+  }
+
+  // =========================================================================
+  // 8. Daraz Secure Checkout & Order Confirmation Flow
+  // =========================================================================
+  function openCheckoutModal() {
+    const cart = getCart();
+    if (cart.length === 0) {
+      showToast('Your shopping cart is empty. Add items to cart before proceeding!', 'warning');
+      return;
+    }
+
+    // Dismiss offcanvas cart if open
+    const cartOffcanvasEl = document.getElementById('cartOffcanvas');
+    if (cartOffcanvasEl && window.bootstrap && window.bootstrap.Offcanvas) {
+      const bsOffcanvas = bootstrap.Offcanvas.getInstance(cartOffcanvasEl) || new bootstrap.Offcanvas(cartOffcanvasEl);
+      bsOffcanvas.hide();
+    }
+
+    let checkoutModalEl = document.getElementById('checkoutModal');
+    if (!checkoutModalEl) {
+      checkoutModalEl = document.createElement('div');
+      checkoutModalEl.id = 'checkoutModal';
+      checkoutModalEl.className = 'modal fade';
+      checkoutModalEl.tabIndex = -1;
+      checkoutModalEl.setAttribute('aria-labelledby', 'checkoutModalLabel');
+      checkoutModalEl.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(checkoutModalEl);
+    }
+
+    const user = getStoredUser();
+    const defaultName = user && user.name ? user.name : '';
+    const defaultPhone = user && user.phone ? user.phone : '';
+
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+    const shippingFee = subtotal >= 1000 ? 0 : 99;
+    const grandTotal = subtotal + shippingFee;
+
+    let itemsHtml = '';
+    cart.forEach(item => {
+      const lineTotal = item.price * (item.quantity || 1);
+      itemsHtml += `
+        <div class="d-flex justify-content-between align-items-center py-2 border-bottom small">
+          <div class="d-flex align-items-center gap-2 overflow-hidden me-2">
+            <img src="${item.image}" alt="${escapeHtml(item.title)}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+            <div class="text-truncate" style="max-width: 170px;">
+              <span class="fw-semibold text-dark d-block text-truncate">${escapeHtml(item.title)}</span>
+              <span class="text-muted small">Qty: ${item.quantity || 1} &times; Rs. ${item.price.toLocaleString()}</span>
+            </div>
+          </div>
+          <span class="fw-bold text-dark text-nowrap">Rs. ${lineTotal.toLocaleString()}</span>
+        </div>
+      `;
+    });
+
+    checkoutModalEl.innerHTML = `
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg border-0">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title fw-bold d-flex align-items-center" id="checkoutModalLabel">
+              <i class="fas fa-shield-alt me-2"></i>Daraz Secure Checkout
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-4" id="checkoutModalBody">
+            <div class="row g-4">
+              <!-- Left Column: Shipping & Payment -->
+              <div class="col-lg-7">
+                <form id="orderCheckoutForm" novalidate>
+                  <h6 class="fw-bold text-dark mb-3 border-bottom pb-2">
+                    <i class="fas fa-map-marker-alt text-primary me-2"></i>1. Delivery Address
+                  </h6>
+                  <div class="row g-2 mb-3">
+                    <div class="col-12 col-md-6">
+                      <label class="form-label small fw-semibold text-secondary">Full Name *</label>
+                      <input type="text" class="form-control form-control-sm" id="orderFullName" value="${escapeHtml(defaultName)}" placeholder="e.g. Muhammad Ali" required>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <label class="form-label small fw-semibold text-secondary">Phone Number *</label>
+                      <input type="tel" class="form-control form-control-sm" id="orderPhone" value="${escapeHtml(defaultPhone)}" placeholder="03001234567" required>
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label small fw-semibold text-secondary">Street Address *</label>
+                      <input type="text" class="form-control form-control-sm" id="orderAddress" placeholder="House #, Street, Block, Area" required>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <label class="form-label small fw-semibold text-secondary">City *</label>
+                      <select class="form-select form-select-sm" id="orderCity" required>
+                        <option value="Karachi">Karachi</option>
+                        <option value="Lahore">Lahore</option>
+                        <option value="Islamabad">Islamabad</option>
+                        <option value="Rawalpindi">Rawalpindi</option>
+                        <option value="Faisalabad">Faisalabad</option>
+                        <option value="Multan">Multan</option>
+                        <option value="Peshawar">Peshawar</option>
+                        <option value="Quetta">Quetta</option>
+                        <option value="Sialkot">Sialkot</option>
+                        <option value="Gujranwala">Gujranwala</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                      </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <label class="form-label small fw-semibold text-secondary">Delivery Service</label>
+                      <div class="form-control form-control-sm bg-light text-muted d-flex align-items-center">
+                        <i class="fas fa-truck-fast text-primary me-2"></i>DEX Standard (2-4 Days)
+                      </div>
+                    </div>
+                  </div>
+
+                  <h6 class="fw-bold text-dark mb-3 border-bottom pb-2 pt-2">
+                    <i class="fas fa-wallet text-primary me-2"></i>2. Payment Method
+                  </h6>
+                  <div class="d-flex flex-column gap-2 mb-2">
+                    <label class="border rounded p-2 d-flex align-items-center justify-content-between cursor-pointer payment-option-card">
+                      <div class="d-flex align-items-center gap-2">
+                        <input type="radio" name="orderPayment" value="Cash on Delivery (COD)" checked class="form-check-input mt-0">
+                        <span class="fw-semibold small"><i class="fas fa-money-bill-wave text-success me-2"></i>Cash on Delivery (COD)</span>
+                      </div>
+                      <span class="badge bg-light text-dark border small">Pay at door</span>
+                    </label>
+
+                    <label class="border rounded p-2 d-flex align-items-center justify-content-between cursor-pointer payment-option-card">
+                      <div class="d-flex align-items-center gap-2">
+                        <input type="radio" name="orderPayment" value="Daraz Wallet / JazzCash / EasyPaisa" class="form-check-input mt-0">
+                        <span class="fw-semibold small"><i class="fas fa-mobile-alt text-warning me-2"></i>Daraz Wallet / Mobile Account</span>
+                      </div>
+                      <span class="badge bg-light text-dark border small">Instant</span>
+                    </label>
+
+                    <label class="border rounded p-2 d-flex align-items-center justify-content-between cursor-pointer payment-option-card">
+                      <div class="d-flex align-items-center gap-2">
+                        <input type="radio" name="orderPayment" value="Credit / Debit Card" class="form-check-input mt-0">
+                        <span class="fw-semibold small"><i class="fas fa-credit-card text-primary me-2"></i>Credit or Debit Card</span>
+                      </div>
+                      <span class="badge bg-light text-dark border small">Visa / Master</span>
+                    </label>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Right Column: Order Summary -->
+              <div class="col-lg-5">
+                <div class="card bg-light border-0 p-3 h-100">
+                  <h6 class="fw-bold text-dark mb-2 border-bottom pb-2">
+                    <i class="fas fa-receipt text-primary me-2"></i>Order Summary
+                  </h6>
+                  <div class="overflow-auto mb-3" style="max-height: 220px;">
+                    ${itemsHtml}
+                  </div>
+                  <div class="border-top pt-2">
+                    <div class="d-flex justify-content-between small text-secondary mb-1">
+                      <span>Items Subtotal:</span>
+                      <span>Rs. ${subtotal.toLocaleString()}</span>
+                    </div>
+                    <div class="d-flex justify-content-between small text-secondary mb-2">
+                      <span>Delivery Fee:</span>
+                      <span>${shippingFee === 0 ? '<strong class="text-success">FREE</strong>' : 'Rs. ' + shippingFee}</span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold fs-5 text-dark border-top pt-2 mb-3">
+                      <span>Grand Total:</span>
+                      <span class="text-primary">Rs. ${grandTotal.toLocaleString()}</span>
+                    </div>
+                    <button class="btn btn-primary w-100 py-2 fw-semibold" id="confirmPlaceOrderBtn" type="button">
+                      <i class="fas fa-check-circle me-2"></i>Confirm & Place Order
+                    </button>
+                    <p class="text-muted text-center small mt-2 mb-0" style="font-size: 0.74rem;">
+                      <i class="fas fa-lock me-1"></i>100% Buyer Protection Guaranteed
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const bsCheckoutModal = bootstrap.Modal.getOrCreateInstance(checkoutModalEl);
+    bsCheckoutModal.show();
+
+    // Attach handler for Place Order button
+    const placeOrderBtn = document.getElementById('confirmPlaceOrderBtn');
+    if (placeOrderBtn) {
+      placeOrderBtn.addEventListener('click', () => {
+        const nameInput = document.getElementById('orderFullName');
+        const phoneInput = document.getElementById('orderPhone');
+        const addressInput = document.getElementById('orderAddress');
+        const citySelect = document.getElementById('orderCity');
+        const selectedPayment = document.querySelector('input[name="orderPayment"]:checked')?.value || 'Cash on Delivery (COD)';
+
+        const name = nameInput ? nameInput.value.trim() : '';
+        const phone = phoneInput ? phoneInput.value.trim() : '';
+        const address = addressInput ? addressInput.value.trim() : '';
+        const city = citySelect ? citySelect.value : 'Karachi';
+
+        if (!name || !phone || !address) {
+          if (!name && nameInput) nameInput.classList.add('is-invalid');
+          if (!phone && phoneInput) phoneInput.classList.add('is-invalid');
+          if (!address && addressInput) addressInput.classList.add('is-invalid');
+          showToast('Please enter your Name, Phone Number, and Delivery Address!', 'warning');
+          return;
+        }
+
+        const orderId = 'DARAZ-PK-' + Math.floor(100000 + Math.random() * 900000);
+
+        // Clear cart
+        clearCart();
+
+        // Render confirmation receipt
+        const bodyEl = document.getElementById('checkoutModalBody');
+        if (bodyEl) {
+          const isPages = window.location.pathname.includes('/pages/');
+          const homeUrl = isPages ? '../index.html' : 'index.html';
+          const helpUrl = isPages ? 'help-center.html' : 'pages/help-center.html';
+
+          bodyEl.innerHTML = `
+            <div class="text-center py-4">
+              <div class="mb-3">
+                <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+              </div>
+              <h3 class="fw-bold text-dark mb-1">Thank You! Order Confirmed</h3>
+              <p class="text-muted mb-4">Your order has been placed and is currently being processed by Daraz Express.</p>
+
+              <div class="card bg-light border-0 mx-auto text-start p-3 mb-4" style="max-width: 480px;">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+                  <span class="text-secondary small">Order Tracking ID:</span>
+                  <span class="badge bg-primary px-3 py-2 fs-6 font-monospace">${orderId}</span>
+                </div>
+                <div class="d-flex justify-content-between small text-secondary mb-1">
+                  <span>Recipient:</span>
+                  <strong class="text-dark">${escapeHtml(name)}</strong>
+                </div>
+                <div class="d-flex justify-content-between small text-secondary mb-1">
+                  <span>Contact Phone:</span>
+                  <span class="text-dark">${escapeHtml(phone)}</span>
+                </div>
+                <div class="d-flex justify-content-between small text-secondary mb-1">
+                  <span>Delivery Address:</span>
+                  <span class="text-dark">${escapeHtml(address)}, ${escapeHtml(city)}</span>
+                </div>
+                <div class="d-flex justify-content-between small text-secondary mb-1">
+                  <span>Payment Method:</span>
+                  <span class="text-dark fw-semibold">${escapeHtml(selectedPayment)}</span>
+                </div>
+                <div class="d-flex justify-content-between small text-secondary mb-1">
+                  <span>Estimated Delivery:</span>
+                  <span class="text-success fw-bold">3 - 5 Business Days (DEX Express)</span>
+                </div>
+                <div class="d-flex justify-content-between fw-bold text-dark border-top pt-2 mt-2">
+                  <span>Total Amount:</span>
+                  <span class="text-primary fs-5">Rs. ${grandTotal.toLocaleString()}</span>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-center gap-3">
+                <a href="${homeUrl}" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                  Continue Shopping
+                </a>
+                <a href="${helpUrl}#how-to-buy" class="btn btn-primary px-4">
+                  <i class="fas fa-truck me-2"></i>Track Order
+                </a>
+              </div>
+            </div>
+          `;
         }
       });
     }
   }
 
   // =========================================================================
-  // 8. Authentication (Buyer & Multi-Vendor Seller Center)
+  // 9. Session Authentication (Sign In, Register, Logout)
   // =========================================================================
-  const USER_STORAGE_KEY = 'daraz_demo_user';
+  const USER_STORAGE_KEY = 'daraz_user_session';
+
+  function getStoredUser() {
+    try {
+      const raw = localStorage.getItem(USER_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
 
   function updateNavbarUserUI() {
     try {
-      const raw = localStorage.getItem(USER_STORAGE_KEY);
-      const user = raw ? JSON.parse(raw) : null;
-      const userText = document.getElementById('navUserText');
-      if (user && user.name && userText) {
-        userText.textContent = user.name;
+      const user = getStoredUser();
+      const loginBtn = document.getElementById('navLoginBtn');
+      const isPages = window.location.pathname.includes('/pages/');
+      const loginPath = isPages ? 'login.html' : 'pages/login.html';
+
+      if (loginBtn) {
+        if (user && user.name) {
+          loginBtn.innerHTML = `<i class="fas fa-user-circle me-1"></i><span id="navUserText">${escapeHtml(user.name)}</span>`;
+          loginBtn.href = loginPath;
+          loginBtn.title = `Signed in as ${user.name} (${user.email || 'Customer'})`;
+        } else {
+          loginBtn.innerHTML = `<i class="fas fa-user me-1"></i><span id="navUserText">Login</span>`;
+          loginBtn.href = loginPath;
+          loginBtn.title = 'Sign In';
+        }
       }
     } catch (e) {}
   }
 
   function setupAuth() {
-    const passwordInput = document.getElementById('password');
-    const toggleBtn = document.getElementById('togglePassword');
-    if (toggleBtn && passwordInput) {
-      toggleBtn.addEventListener('click', function () {
-        const isPassword = passwordInput.type === 'password';
-        passwordInput.type = isPassword ? 'text' : 'password';
+    // Password visibility toggle
+    document.querySelectorAll('#togglePassword, .toggle-password-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const input = this.closest('.input-group')?.querySelector('input');
+        if (!input) return;
+        const isPass = input.type === 'password';
+        input.type = isPass ? 'text' : 'password';
         const icon = this.querySelector('i');
         if (icon) {
-          icon.classList.toggle('fa-eye', !isPassword);
-          icon.classList.toggle('fa-eye-slash', isPassword);
+          icon.classList.toggle('fa-eye', !isPass);
+          icon.classList.toggle('fa-eye-slash', isPass);
         }
       });
+    });
+
+    // Check if on login page and already logged in
+    const activeUserSection = document.getElementById('activeUserSection');
+    const authFormsSection = document.getElementById('authFormsSection');
+    const loggedInUser = getStoredUser();
+
+    if (activeUserSection && authFormsSection) {
+      if (loggedInUser && loggedInUser.name) {
+        activeUserSection.classList.remove('d-none');
+        authFormsSection.classList.add('d-none');
+        const activeName = document.getElementById('activeUserName');
+        const activeEmail = document.getElementById('activeUserEmail');
+        if (activeName) activeName.textContent = loggedInUser.name;
+        if (activeEmail) activeEmail.textContent = loggedInUser.email || 'Customer Account';
+      } else {
+        activeUserSection.classList.add('d-none');
+        authFormsSection.classList.remove('d-none');
+      }
     }
 
-    const buyerForm = document.getElementById('buyerLoginForm');
-    if (buyerForm) {
-      buyerForm.addEventListener('submit', (e) => {
+    // Sign In Form Listener
+    const loginForm = document.getElementById('loginForm') || document.getElementById('buyerLoginForm');
+    if (loginForm) {
+      loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const email = document.getElementById('email')?.value.trim() || 'Customer';
-        const name = email.split('@')[0];
-        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify({ name: name, role: 'buyer' }));
-        showToast(`Welcome back, ${name}! Redirecting to marketplace...`, 'success');
-        setTimeout(() => window.location.href = '../index.html', 1000);
+        const emailInput = document.getElementById('email') || loginForm.querySelector('input[type="email"], input[type="text"]');
+        const email = emailInput ? emailInput.value.trim() : 'Customer';
+        const rawName = email.includes('@') ? email.split('@')[0] : email;
+        const displayName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+
+        const session = {
+          name: displayName,
+          email: email,
+          role: 'buyer',
+          loggedInAt: new Date().toISOString()
+        };
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(session));
+        showToast(`Welcome back, ${displayName}! Signed in successfully.`, 'success');
+        updateNavbarUserUI();
+
+        const isPages = window.location.pathname.includes('/pages/');
+        const targetUrl = isPages ? '../index.html' : 'index.html';
+        setTimeout(() => { window.location.href = targetUrl; }, 800);
       });
     }
 
-    const sellerForm = document.getElementById('sellerLoginForm');
-    if (sellerForm) {
-      sellerForm.addEventListener('submit', (e) => {
+    // Register Form Listener
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+      registerForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify({ name: 'Seller Partner', role: 'seller' }));
-        showToast('Authenticated! Redirecting to Daraz Seller Center...', 'success');
-        setTimeout(() => window.location.href = '../index.html', 1000);
+        const regName = document.getElementById('regName')?.value.trim() || 'New User';
+        const regEmail = document.getElementById('regEmail')?.value.trim() || 'user@daraz.pk';
+        const regPhone = document.getElementById('regPhone')?.value.trim() || '';
+
+        const session = {
+          name: regName,
+          email: regEmail,
+          phone: regPhone,
+          role: 'buyer',
+          registeredAt: new Date().toISOString()
+        };
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(session));
+        showToast(`Welcome to Daraz Store, ${regName}! Account created.`, 'success');
+        updateNavbarUserUI();
+
+        const isPages = window.location.pathname.includes('/pages/');
+        const targetUrl = isPages ? '../index.html' : 'index.html';
+        setTimeout(() => { window.location.href = targetUrl; }, 800);
+      });
+    }
+
+    // Social Login Buttons
+    document.querySelectorAll('.social-login-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        const provider = this.getAttribute('data-provider') || 'User';
+        const session = {
+          name: `${provider} Customer`,
+          email: `${provider.toLowerCase()}@daraz-user.pk`,
+          role: 'buyer',
+          provider: provider
+        };
+        localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(session));
+        showToast(`Signed in with ${provider}! Redirecting...`, 'success');
+        updateNavbarUserUI();
+        const isPages = window.location.pathname.includes('/pages/');
+        const targetUrl = isPages ? '../index.html' : 'index.html';
+        setTimeout(() => { window.location.href = targetUrl; }, 800);
+      });
+    });
+  }
+
+  function userLogout() {
+    localStorage.removeItem(USER_STORAGE_KEY);
+    showToast('You have been signed out successfully.', 'info');
+    updateNavbarUserUI();
+
+    const activeUserSection = document.getElementById('activeUserSection');
+    const authFormsSection = document.getElementById('authFormsSection');
+    if (activeUserSection && authFormsSection) {
+      activeUserSection.classList.add('d-none');
+      authFormsSection.classList.remove('d-none');
+    }
+  }
+
+  // =========================================================================
+  // 10. Help Center Search Filter
+  // =========================================================================
+  function setupHelpCenter() {
+    const helpInput = document.getElementById('helpCenterSearchInput') || document.querySelector('.search-card input[type="search"]');
+    const helpForm = document.getElementById('helpCenterSearchForm') || document.querySelector('.search-card form');
+    const accordion = document.getElementById('helpCenterAccordion');
+
+    if (!helpInput || !accordion) return;
+
+    function doFilter() {
+      const q = helpInput.value.trim().toLowerCase();
+      const items = accordion.querySelectorAll('.accordion-item');
+      let matchCount = 0;
+
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (!q || text.includes(q)) {
+          item.style.display = '';
+          matchCount++;
+          if (q) {
+            const collapse = item.querySelector('.accordion-collapse');
+            if (collapse && window.bootstrap) {
+              bootstrap.Collapse.getOrCreateInstance(collapse).show();
+            }
+          }
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      let noFaq = document.getElementById('noFaqsFoundNotice');
+      if (!noFaq) {
+        noFaq = document.createElement('div');
+        noFaq.id = 'noFaqsFoundNotice';
+        noFaq.className = 'text-center py-4 text-muted';
+        noFaq.innerHTML = '<i class="fas fa-question-circle fa-2x mb-2 text-warning"></i><p>No matching questions found in Help Center. Try another search or contact support.</p>';
+        accordion.parentNode.appendChild(noFaq);
+      }
+      noFaq.style.display = matchCount === 0 ? 'block' : 'none';
+    }
+
+    helpInput.addEventListener('input', doFilter);
+    if (helpForm) {
+      helpForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        doFilter();
+        const faqSec = document.getElementById('faqSection');
+        if (faqSec) faqSec.scrollIntoView({ behavior: 'smooth' });
       });
     }
   }
 
   // =========================================================================
-  // 9. Contact Form & Back to Top
+  // 11. Contact Form & Back to Top
   // =========================================================================
-  function setupMisc() {
+  function setupContact() {
     const contactForm = document.getElementById('contactForm') || document.querySelector('.contact-form-card form');
-    if (contactForm) {
-      contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        showToast('Your message has been submitted to Daraz Support! We will reply within 4 hours.', 'success');
-        contactForm.reset();
-      });
-    }
+    if (!contactForm) return;
 
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const firstName = document.getElementById('firstName')?.value.trim();
+      const lastName = document.getElementById('lastName')?.value.trim();
+      const email = document.getElementById('email')?.value.trim();
+      const subject = document.getElementById('subject')?.value.trim();
+      const message = document.getElementById('message')?.value.trim();
+
+      if (!firstName || !lastName || !email || !subject || !message) {
+        showToast('Please fill in all required fields.', 'warning');
+        return;
+      }
+
+      const ticketId = 'DZ-' + Math.floor(10000 + Math.random() * 90000);
+      const alertEl = document.getElementById('contactSuccessAlert');
+      const msgEl = document.getElementById('contactSuccessMsg');
+
+      if (alertEl && msgEl) {
+        msgEl.innerHTML = `Thank you, <strong>${escapeHtml(firstName)} ${escapeHtml(lastName)}</strong>! Your ticket <strong>#${ticketId}</strong> has been logged. Our Daraz customer support team will reply to <strong>${escapeHtml(email)}</strong> within 4 hours.`;
+        alertEl.classList.remove('d-none');
+        alertEl.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        showToast(`Message sent! Support ticket #${ticketId} created. We will reply shortly.`, 'success');
+      }
+      contactForm.reset();
+    });
+  }
+
+  function setupMisc() {
     const backToTop = document.getElementById('backToTop');
     if (backToTop) {
       window.addEventListener('scroll', () => {
@@ -1092,7 +1550,7 @@
       .replace(/'/g, '&#039;');
   }
 
-  // Expose global window API for inline callbacks
+  // Expose global window API
   window.DarazApp = {
     addToCartById: (id) => {
       const p = marketplaceProducts.find(item => item.id === id);
@@ -1101,18 +1559,12 @@
     openQuickView: openQuickView,
     updateItemQty: updateItemQty,
     removeFromCart: removeFromCart,
-    clearCart: clearCart
+    clearCart: clearCart,
+    openCheckout: openCheckoutModal,
+    logout: userLogout
   };
 
-  // Global checkoutCart helper
-  window.checkoutCart = function () {
-    const cart = getCart();
-    if (cart.length === 0) {
-      showToast('Your cart is empty. Add products before checking out!', 'warning');
-    } else {
-      showToast('Redirecting to Daraz Secure Checkout... Thank you for shopping with us!', 'success');
-    }
-  };
+  window.checkoutCart = openCheckoutModal;
 
   // DOM Ready Initializer
   document.addEventListener('DOMContentLoaded', () => {
@@ -1124,6 +1576,8 @@
     setupQuickView();
     setupCartButtons();
     setupAuth();
+    setupHelpCenter();
+    setupContact();
     setupMisc();
   });
 })();

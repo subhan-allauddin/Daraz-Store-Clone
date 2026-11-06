@@ -1213,3 +1213,22 @@ footer h5::after {
         gap: 4px;
     }
 }
+
+/* ==========================================================================
+   Checkout & Payment Option Cards
+   ========================================================================== */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.payment-option-card {
+    transition: var(--transition);
+    border-color: var(--daraz-gray-200);
+    background: #fff;
+}
+
+.payment-option-card:hover {
+    border-color: var(--daraz-orange);
+    background-color: #fff9f5;
+}
+
